@@ -1,0 +1,71 @@
+{
+  "BDH": {
+    "model_name": "BDH",
+    "best_val_prauc": 0.0372,
+    "optimal_threshold": 0.2,
+    "test_pr_auc": 0.0451,
+    "test_roc_auc": 0.5095,
+    "test_f1": 0.0306,
+    "test_precision": 0.0158,
+    "test_recall": 0.5,
+    "test_accuracy": 0.5178,
+    "confusion_matrix": [
+      [
+        201,
+        187
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "inference_ms_per_sample": 0.26,
+    "training_time_seconds": 231.2
+  },
+  "LSTM": {
+    "model_name": "LSTM",
+    "best_val_prauc": 0.2634,
+    "optimal_threshold": 0.6774,
+    "test_pr_auc": 0.0359,
+    "test_roc_auc": 0.6783,
+    "test_f1": 0.0727,
+    "test_precision": 0.0408,
+    "test_recall": 0.3333,
+    "test_accuracy": 0.8706,
+    "confusion_matrix": [
+      [
+        341,
+        47
+      ],
+      [
+        4,
+        2
+      ]
+    ],
+    "inference_ms_per_sample": 0.14,
+    "training_time_seconds": 117.0
+  },
+  "TFT": {
+    "model_name": "TFT",
+    "best_val_prauc": 0.0646,
+    "optimal_threshold": 0.4171,
+    "test_pr_auc": 0.0209,
+    "test_roc_auc": 0.5567,
+    "test_f1": 0.029,
+    "test_precision": 0.0149,
+    "test_recall": 0.5,
+    "test_accuracy": 0.4898,
+    "confusion_matrix": [
+      [
+        190,
+        198
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "inference_ms_per_sample": 0.75,
+    "training_time_seconds": 932.4
+  }
+}

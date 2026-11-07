@@ -1,0 +1,337 @@
+{
+  "task": "Aditya-L1 SUIT Solar Flare Prediction (~90s Forecast Window)",
+  "version": "v3",
+  "seed": 42,
+  "n_features": 17,
+  "val_start": 428,
+  "split_idx": 502,
+  "chronological_split_cutoff_utc": "2024-02-22 21:21:53",
+  "augmentation": {
+    "sigma_scale": 0.05,
+    "n_synth": 39,
+    "n_flare_events": 7,
+    "n_train_pos_aug": 50
+  },
+  "original": {
+    "train_samples": 428,
+    "train_positives": 7,
+    "val_samples": 74,
+    "val_positives": 4,
+    "test_samples": 216,
+    "test_positives": 3,
+    "pos_weight": 44.6,
+    "metrics": {
+      "BDH": {
+        "model_name": "BDH",
+        "roc_auc": 0.349,
+        "pr_auc": 0.0148,
+        "default_threshold_0.5": {
+          "threshold": 0.5,
+          "accuracy": 0.9861,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "confusion_matrix": [
+            [
+              213,
+              0
+            ],
+            [
+              3,
+              0
+            ]
+          ],
+          "tn": 213,
+          "fp": 0,
+          "fn": 3,
+          "tp": 0
+        },
+        "optimal_f1_threshold": {
+          "threshold": 0.0014,
+          "accuracy": 0.1713,
+          "precision": 0.0165,
+          "recall": 1.0,
+          "f1": 0.0324,
+          "confusion_matrix": [
+            [
+              34,
+              179
+            ],
+            [
+              0,
+              3
+            ]
+          ],
+          "tn": 34,
+          "fp": 179,
+          "fn": 0,
+          "tp": 3
+        },
+        "training_time_s": 66.2,
+        "n_params": 119217,
+        "best_val_pr_auc": 0.2432
+      },
+      "LSTM": {
+        "model_name": "LSTM",
+        "roc_auc": 0.5587,
+        "pr_auc": 0.0203,
+        "default_threshold_0.5": {
+          "threshold": 0.5,
+          "accuracy": 0.9861,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "confusion_matrix": [
+            [
+              213,
+              0
+            ],
+            [
+              3,
+              0
+            ]
+          ],
+          "tn": 213,
+          "fp": 0,
+          "fn": 3,
+          "tp": 0
+        },
+        "optimal_f1_threshold": {
+          "threshold": 0.0152,
+          "accuracy": 0.5231,
+          "precision": 0.0283,
+          "recall": 1.0,
+          "f1": 0.055,
+          "confusion_matrix": [
+            [
+              110,
+              103
+            ],
+            [
+              0,
+              3
+            ]
+          ],
+          "tn": 110,
+          "fp": 103,
+          "fn": 0,
+          "tp": 3
+        },
+        "training_time_s": 61.9,
+        "n_params": 69953,
+        "best_val_pr_auc": 0.1467
+      },
+      "TFT": {
+        "model_name": "TFT",
+        "roc_auc": 0.5211,
+        "pr_auc": 0.0191,
+        "default_threshold_0.5": {
+          "threshold": 0.5,
+          "accuracy": 0.9861,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "confusion_matrix": [
+            [
+              213,
+              0
+            ],
+            [
+              3,
+              0
+            ]
+          ],
+          "tn": 213,
+          "fp": 0,
+          "fn": 3,
+          "tp": 0
+        },
+        "optimal_f1_threshold": {
+          "threshold": 0.0231,
+          "accuracy": 0.6343,
+          "precision": 0.025,
+          "recall": 0.6667,
+          "f1": 0.0482,
+          "confusion_matrix": [
+            [
+              135,
+              78
+            ],
+            [
+              1,
+              2
+            ]
+          ],
+          "tn": 135,
+          "fp": 78,
+          "fn": 1,
+          "tp": 2
+        },
+        "training_time_s": 353.7,
+        "n_params": 249733,
+        "best_val_pr_auc": 0.127
+      }
+    }
+  },
+  "augmented": {
+    "train_samples": 541,
+    "train_positives": 50,
+    "val_samples": 74,
+    "val_positives": 4,
+    "test_samples": 216,
+    "test_positives": 3,
+    "pos_weight": 9.8,
+    "metrics": {
+      "BDH": {
+        "model_name": "BDH",
+        "roc_auc": 0.5399,
+        "pr_auc": 0.0278,
+        "default_threshold_0.5": {
+          "threshold": 0.5,
+          "accuracy": 0.6528,
+          "precision": 0.0135,
+          "recall": 0.3333,
+          "f1": 0.026,
+          "confusion_matrix": [
+            [
+              140,
+              73
+            ],
+            [
+              2,
+              1
+            ]
+          ],
+          "tn": 140,
+          "fp": 73,
+          "fn": 2,
+          "tp": 1
+        },
+        "optimal_f1_threshold": {
+          "threshold": 0.5046,
+          "accuracy": 0.8981,
+          "precision": 0.0476,
+          "recall": 0.3333,
+          "f1": 0.0833,
+          "confusion_matrix": [
+            [
+              193,
+              20
+            ],
+            [
+              2,
+              1
+            ]
+          ],
+          "tn": 193,
+          "fp": 20,
+          "fn": 2,
+          "tp": 1
+        },
+        "training_time_s": 83.5,
+        "n_params": 119217,
+        "best_val_pr_auc": 0.5378
+      },
+      "LSTM": {
+        "model_name": "LSTM",
+        "roc_auc": 0.7152,
+        "pr_auc": 0.031,
+        "default_threshold_0.5": {
+          "threshold": 0.5,
+          "accuracy": 0.9861,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "confusion_matrix": [
+            [
+              213,
+              0
+            ],
+            [
+              3,
+              0
+            ]
+          ],
+          "tn": 213,
+          "fp": 0,
+          "fn": 3,
+          "tp": 0
+        },
+        "optimal_f1_threshold": {
+          "threshold": 0.0,
+          "accuracy": 0.6759,
+          "precision": 0.0411,
+          "recall": 1.0,
+          "f1": 0.0789,
+          "confusion_matrix": [
+            [
+              143,
+              70
+            ],
+            [
+              0,
+              3
+            ]
+          ],
+          "tn": 143,
+          "fp": 70,
+          "fn": 0,
+          "tp": 3
+        },
+        "training_time_s": 69.5,
+        "n_params": 69953,
+        "best_val_pr_auc": 1.0
+      },
+      "TFT": {
+        "model_name": "TFT",
+        "roc_auc": 0.4444,
+        "pr_auc": 0.0181,
+        "default_threshold_0.5": {
+          "threshold": 0.5,
+          "accuracy": 0.8472,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "confusion_matrix": [
+            [
+              183,
+              30
+            ],
+            [
+              3,
+              0
+            ]
+          ],
+          "tn": 183,
+          "fp": 30,
+          "fn": 3,
+          "tp": 0
+        },
+        "optimal_f1_threshold": {
+          "threshold": 0.4757,
+          "accuracy": 0.7917,
+          "precision": 0.0227,
+          "recall": 0.3333,
+          "f1": 0.0426,
+          "confusion_matrix": [
+            [
+              170,
+              43
+            ],
+            [
+              2,
+              1
+            ]
+          ],
+          "tn": 170,
+          "fp": 43,
+          "fn": 2,
+          "tp": 1
+        },
+        "training_time_s": 417.5,
+        "n_params": 249733,
+        "best_val_pr_auc": 0.5412
+      }
+    }
+  }
+}

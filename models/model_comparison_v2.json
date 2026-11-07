@@ -1,0 +1,108 @@
+{
+  "task": "Aditya-L1 SUIT Solar Flare Prediction (~90s Forecast Window)",
+  "seed": 42,
+  "n_features": 17,
+  "train_samples": 502,
+  "train_positives": 11,
+  "test_samples": 216,
+  "test_positives": 3,
+  "test_negatives": 213,
+  "pos_weight": 50.0,
+  "chronological_split_cutoff_utc": "2024-02-22 21:21:53",
+  "metrics": {
+    "BDH": {
+      "model_name": "Baby Dragon Hatchling (BDH)",
+      "roc_auc": 0.8404,
+      "pr_auc": 0.0649,
+      "default_threshold_0.5": {
+        "threshold": 0.5,
+        "accuracy": 0.9861,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "confusion_matrix": [
+          [
+            213,
+            0
+          ],
+          [
+            3,
+            0
+          ]
+        ],
+        "tn": 213,
+        "fp": 0,
+        "fn": 3,
+        "tp": 0
+      },
+      "optimal_f1_threshold": {
+        "threshold": 0.0508,
+        "accuracy": 0.8657,
+        "precision": 0.0667,
+        "recall": 0.6667,
+        "f1": 0.1212,
+        "confusion_matrix": [
+          [
+            185,
+            28
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "tn": 185,
+        "fp": 28,
+        "fn": 1,
+        "tp": 2
+      }
+    },
+    "LSTM": {
+      "model_name": "LSTM Baseline",
+      "roc_auc": 0.8044,
+      "pr_auc": 0.0441,
+      "default_threshold_0.5": {
+        "threshold": 0.5,
+        "accuracy": 0.9861,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "confusion_matrix": [
+          [
+            213,
+            0
+          ],
+          [
+            3,
+            0
+          ]
+        ],
+        "tn": 213,
+        "fp": 0,
+        "fn": 3,
+        "tp": 0
+      },
+      "optimal_f1_threshold": {
+        "threshold": 0.0948,
+        "accuracy": 0.7685,
+        "precision": 0.0566,
+        "recall": 1.0,
+        "f1": 0.1071,
+        "confusion_matrix": [
+          [
+            163,
+            50
+          ],
+          [
+            0,
+            3
+          ]
+        ],
+        "tn": 163,
+        "fp": 50,
+        "fn": 0,
+        "tp": 3
+      }
+    }
+  }
+}

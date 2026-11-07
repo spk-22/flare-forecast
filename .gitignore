@@ -1,0 +1,31 @@
+# Raw Astronomical FITS Data (large telemetry files > 30GB)
+suit2024/
+*.fits
+*.fit
+*.fts
+
+# Zip archives and scratch artifacts
+*.zip
+*.log
+scratch/
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+
+# System and IDE Files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
