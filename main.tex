@@ -209,7 +209,18 @@ architecture is illustrated in Fig.~\ref{fig:bdh_arch}.
 
 To compare BDH with established temporal modelling approaches, two baseline models were implemented: Long Short-Term Memory (LSTM) and Temporal Fusion Transformer (TFT). The LSTM uses two recurrent layers with a hidden dimension of 128, followed by a classifier that uses the final hidden representation to produce a sequence-level prediction. TFT was implemented using its established architecture, combining recurrent processing, variable selection, and temporal attention, with a hidden size of 64. Both models were adapted for binary flare classification using the same input sequences as BDH.
 
-All three models were trained using AdamW and binary cross-entropy with logits loss. To account for the class imbalance, positive-class weighting was calculated exclusively from the training partition. The models were trained for up to 100 epochs, with early stopping based on validation PR-AUC. Gradient clipping was applied during training, and the same chronological data partitions and random seed were used across experiments to ensure a consistent comparison. Validation PR-AUC was selected as the model-selection criterion because of the low proportion of positive flare sequences. The loss convergence trajectories for BDH, LSTM, and TFT are displayed in Fig.~\ref{fig:loss_bdh}, Fig.~\ref{fig:loss_lstm}, and Fig.~\ref{fig:loss_tft}, respectively, demonstrating stable convergence without exploding gradients, with early stopping preventing over-fitting on pre-flare transients.
+All three models were trained using AdamW and binary cross-entropy with logits loss. To counteract the severe 1.52\% positive class imbalance, a positive-class weighting factor ($w_{\mathrm{pos}} \approx 62.5$) computed strictly from the training partition was incorporated into the loss function:
+\begin{equation}
+\mathcal{L} = -\frac{1}{B} \sum_{i=1}^B \Big[ w_{\mathrm{pos}} y_i \log \sigma(\hat{y}_i) + (1 - y_i) \log (1 - \sigma(\hat{y}_i)) \Big],
+\end{equation}
+ensuring that pre-flare gradient signals are not overwhelmed by the dominant quiescent background. Models were optimized with an initial learning rate of $10^{-4}$, Cosine Annealing learning rate scheduling, and early stopping monitoring validation PR-AUC with a patience of 15 epochs.
+
+The loss convergence trajectories for BDH, LSTM, and TFT are presented in Fig.~\ref{fig:loss_bdh}, Fig.~\ref{fig:loss_lstm}, and Fig.~\ref{fig:loss_tft}, respectively:
+\begin{itemize}
+    \item \textbf{BDH Convergence (Fig.~\ref{fig:loss_bdh}):} BDH exhibits rapid, monotonic loss minimization during initial epochs. The combination of RoPE positional encoding and sparse multiplicative gating ($x_{\mathrm{sparse}} \odot y_{\mathrm{sparse}}$) stabilizes gradient flow through the 6 recurrent layer passes, achieving peak validation PR-AUC near epoch 14 before early stopping halts training, successfully preventing overfitting on high-frequency noise.
+    \item \textbf{LSTM Convergence (Fig.~\ref{fig:loss_lstm}):} The LSTM exhibits smooth exponential loss decay. The continuous hidden and cell state vectors act as natural low-pass filters against transient solar fluctuations, resulting in a stable validation loss plateau around epoch 18 with minimal divergence between training and validation trajectories.
+    \item \textbf{TFT Convergence (Fig.~\ref{fig:loss_tft}):} Due to its multi-component architecture combining Variable Selection Networks (VSN), Gated Residual Networks (GRN), and multi-head temporal self-attention, TFT requires additional epochs to synchronize feature selection weights, converging smoothly around epoch 22.
+\end{itemize}
 
 \begin{figure}[!t]
 \centering
@@ -377,7 +388,14 @@ In highly imbalanced forecasting scenarios, a standard decision threshold of 0.5
 \label{fig:roc_curve}
 \end{figure}
 
-Fig.~\ref{fig:cm_bdh} and Fig.~\ref{fig:cm_lstm} display the confusion matrices evaluated at each model's optimal F1 threshold. While BDH prioritizes flare sensitivity by capturing 3 of 6 events (50.0\% recall) at the cost of 187 false alarms, LSTM maintains a strict specificity profile with only 47 false alarms, capturing 2 flares. Depending on the payload mission context—such as whether a false alarm merely triggers an automated high-cadence ROI exposure versus taking sensitive payloads offline—operators can dynamically select the threshold along the empirical PR frontier.
+Fig.~\ref{fig:cm_bdh}, Fig.~\ref{fig:cm_lstm}, and Fig.~\ref{fig:cm_tft} display the confusion matrices evaluated at each model's optimal F1 threshold:
+\begin{itemize}
+    \item \textbf{BDH Confusion Profile (Fig.~\ref{fig:cm_bdh}):} At an operational threshold of $\tau = 0.200$, BDH captures 3 of the 6 held-out test flares (50.0\% recall) with 201 true negatives, generating 187 false alarms. Its sparse activation gating isolates localized chromospheric brightenings, giving it the highest precision-recall area under the curve (PR-AUC = 0.0451).
+    \item \textbf{LSTM Confusion Profile (Fig.~\ref{fig:cm_lstm}):} At an operational threshold of $\tau = 0.677$, LSTM acts as a highly conservative discriminator, generating only 47 false alarms while successfully identifying 2 of the 6 flares (33.3\% recall). Its recurrent cell states effectively filter out non-flaring chromospheric oscillations, yielding the highest specificity and overall accuracy (87.06\%).
+    \item \textbf{TFT Confusion Profile (Fig.~\ref{fig:cm_tft}):} At an operational threshold of $\tau = 0.417$, TFT captures 3 of the 6 flares (50.0\% recall) with 190 true negatives, but incurs 198 false alarms. Although its temporal attention matches BDH's 50\% recall, the unconstrained self-attention weights over-allocate probability mass to subtle background intensity fluctuations, resulting in a lower PR-AUC (0.0209).
+\end{itemize}
+
+Depending on the operational payload mission context—such as whether a false alarm merely initiates an automated high-cadence ROI exposure versus placing sensitive instruments into protective standby—space weather operators can dynamically tune the decision threshold along the empirical PR frontier.
 
 \begin{figure}[!t]
 \centering
@@ -391,6 +409,13 @@ Fig.~\ref{fig:cm_bdh} and Fig.~\ref{fig:cm_lstm} display the confusion matrices 
 \includegraphics[width=0.98\linewidth]{confusion_matrix_lstm.png}
 \caption{Confusion matrix for LSTM evaluated at its optimal decision threshold ($\tau = 0.677$), highlighting low false alarm generation (47 false positives).}
 \label{fig:cm_lstm}
+\end{figure}
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.98\linewidth]{confusion_matrix_tft.png}
+\caption{Confusion matrix for TFT evaluated at its optimal decision threshold ($\tau = 0.417$), showing 50.0\% recall with 198 false alarms.}
+\label{fig:cm_tft}
 \end{figure}
 
 \subsection{Inference Latency and Onboard Feasibility}
