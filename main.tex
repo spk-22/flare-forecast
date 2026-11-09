@@ -274,7 +274,7 @@ Table~\ref{tab:model_comparison} summarises the empirical performance across the
 \caption{Performance Comparison of Temporal Models on the Independent Test Set (Prevalence = 1.52\%)}
 \label{tab:model_comparison}
 \centering
-\setlength{\tabcolsep}{4pt}
+\resizebox{\columnwidth}{!}{%
 \begin{tabular}{|l|c|c|c|c|c|c|}
 \hline
 \textbf{Model} & \textbf{PR-AUC} & \textbf{ROC-AUC} & \textbf{F1} & \textbf{Recall} & \textbf{Precision} & \textbf{Latency (ms)} \\
@@ -284,7 +284,8 @@ Table~\ref{tab:model_comparison} summarises the empirical performance across the
 \textbf{TFT}        & 0.0209 & 0.5567 & 0.0290 & \textbf{0.5000} & 0.0149 & 0.75 \\
 Random Baseline     & 0.0152 & 0.5000 & 0.0299 & 1.0000 & 0.0152 & -- \\
 \hline
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 
 The empirical advantage of BDH in PR-AUC stems from its sparse multiplicative gating mechanism. By projecting the 256-dimensional solar representation into an expanded sparse latent space and evaluating the interaction $x_{\mathrm{sparse}} \odot y_{\mathrm{sparse}}$, BDH isolates transient chromospheric brightenings that are easily dampened or averaged out in the continuous recurrent state of the LSTM or the self-attention weights of the TFT. Conversely, the dense gating of the LSTM proves superior in rejecting background noise across quiescent regions, explaining its higher ROC-AUC and lower false-positive rate.
@@ -306,7 +307,7 @@ Table~\ref{tab:bdh_grid} reports the ranked results across key experimental conf
 \caption{Systematic BDH Hyperparameter Grid Exploration Ranked by Test PR-AUC}
 \label{tab:bdh_grid}
 \centering
-\setlength{\tabcolsep}{3pt}
+\resizebox{\columnwidth}{!}{%
 \begin{tabular}{|l|c|c|c|c|c|c|c|c|}
 \hline
 \textbf{Experiment} & \textbf{$L$} & \textbf{$D$} & \textbf{$NH$} & \textbf{Mult} & \textbf{Drop} & \textbf{Params} & \textbf{PR-AUC} & \textbf{ROC-AUC} \\
@@ -325,7 +326,8 @@ Exp-02 (Shallow L=2) & 2 & 128 & 4 & 32  & 0.10 & 1.58M  & 0.0206 & 0.5352 \\
 Exp-17 (Ultra-Light) & 2 & 64  & 2 & 16  & 0.05 & 0.20M  & 0.0159 & 0.4781 \\
 Exp-08 (Dual Head)   & 4 & 128 & 2 & 32  & 0.10 & 1.58M  & 0.0153 & 0.4119 \\
 \hline
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 
 \textbf{1. Official Default vs. Resource-Constrained Scaled BDH:} The official default configuration (\texttt{Exp-01}: $L=6, D=256, NH=4, \mathrm{mult}=128$) achieves the highest individual PR-AUC of 0.0438. However, its internal latent dimension $N \times NH = 32,768$ yields 25.18 million parameters, imposing substantial computational overhead during training ($\approx 1820$ seconds on CPU). In contrast, \texttt{Exp-14} ($L=4, D=128, NH=4, \mathrm{mult}=32, p=0.05$) attains an almost identical PR-AUC of 0.0418 with only 1.58 million parameters—a $16\times$ parameter reduction and a $12\times$ reduction in computational latency. This establishes \texttt{Exp-14} as the most cost-effective and operationally feasible BDH model.
