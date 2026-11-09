@@ -266,30 +266,33 @@ All three models were trained using AdamW and binary cross-entropy with logits l
 \end{equation}
 ensuring that pre-flare gradient signals are not overwhelmed by the dominant quiescent background. Models were optimized with an initial learning rate of $10^{-4}$, Cosine Annealing learning rate scheduling, and early stopping monitoring validation PR-AUC with a patience of 15 epochs.
 
-The loss convergence trajectories across optimization epochs are presented in Fig.~\ref{fig:training_losses}:
+The loss convergence trajectories across optimization epochs are presented in Figs.~\ref{fig:loss_bdh}--\ref{fig:loss_tft}:
 \begin{itemize}
-    \item \textbf{BDH Convergence (Fig.~\ref{fig:training_losses}, left):} BDH exhibits rapid, monotonic loss minimization during initial epochs. The combination of RoPE positional encoding and sparse multiplicative gating ($x_{\mathrm{sparse}} \odot y_{\mathrm{sparse}}$) stabilizes gradient flow through the 6 recurrent layer passes, achieving peak validation PR-AUC near epoch 14 before early stopping halts training, successfully preventing overfitting on high-frequency noise.
-    \item \textbf{LSTM Convergence (Fig.~\ref{fig:training_losses}, center):} The LSTM exhibits smooth exponential loss decay. The continuous hidden and cell state vectors act as natural low-pass filters against transient solar fluctuations, resulting in a stable validation loss plateau around epoch 18 with minimal divergence between training and validation trajectories.
-    \item \textbf{TFT Convergence (Fig.~\ref{fig:training_losses}, right):} Due to its multi-component architecture combining Variable Selection Networks (VSN), Gated Residual Networks (GRN), and multi-head temporal self-attention, TFT requires additional epochs to synchronize feature selection weights, converging smoothly around epoch 22.
+    \item \textbf{BDH Convergence (Fig.~\ref{fig:loss_bdh}):} BDH exhibits rapid, monotonic loss minimization during initial epochs. The combination of RoPE positional encoding and sparse multiplicative gating ($x_{\mathrm{sparse}} \odot y_{\mathrm{sparse}}$) stabilizes gradient flow through the 6 recurrent layer passes, achieving peak validation PR-AUC near epoch 14 before early stopping halts training, successfully preventing overfitting on high-frequency noise.
+    \item \textbf{LSTM Convergence (Fig.~\ref{fig:loss_lstm}):} The LSTM exhibits smooth exponential loss decay. The continuous hidden and cell state vectors act as natural low-pass filters against transient solar fluctuations, resulting in a stable validation loss plateau around epoch 18 with minimal divergence between training and validation trajectories.
+    \item \textbf{TFT Convergence (Fig.~\ref{fig:loss_tft}):} Due to its multi-component architecture combining Variable Selection Networks (VSN), Gated Residual Networks (GRN), and multi-head temporal self-attention, TFT requires additional epochs to synchronize feature selection weights, converging smoothly around epoch 22.
 \end{itemize}
 
-\begin{figure*}[!t]
+\begin{figure}[!htbp]
 \centering
-\begin{minipage}{0.32\textwidth}
+\includegraphics[width=0.98\linewidth]{training_loss_bdh.png}
+\caption{BDH training and validation loss convergence across optimization epochs, demonstrating rapid monotonic minimization and effective prevention of overfitting via early stopping.}
+\label{fig:loss_bdh}
+\end{figure}
+
+\begin{figure}[!htbp]
 \centering
-\includegraphics[width=\linewidth]{training_loss_bdh.png}
-\end{minipage}\hfill
-\begin{minipage}{0.32\textwidth}
+\includegraphics[width=0.98\linewidth]{training_loss_lstm.png}
+\caption{LSTM training and validation loss convergence across optimization epochs, showing smooth exponential decay and a stable validation plateau with minimal train/val divergence.}
+\label{fig:loss_lstm}
+\end{figure}
+
+\begin{figure}[!htbp]
 \centering
-\includegraphics[width=\linewidth]{training_loss_lstm.png}
-\end{minipage}\hfill
-\begin{minipage}{0.32\textwidth}
-\centering
-\includegraphics[width=\linewidth]{training_loss_tft.png}
-\end{minipage}
-\caption{Training and validation loss convergence trajectories across optimization epochs for BDH (left), LSTM (center), and TFT (right), demonstrating stable loss minimization and the prevention of overfitting via validation-guided early stopping.}
-\label{fig:training_losses}
-\end{figure*}
+\includegraphics[width=0.98\linewidth]{training_loss_tft.png}
+\caption{TFT training and validation loss convergence across optimization epochs, illustrating the additional epochs required for synchronization of multi-component feature selection weights before stable convergence.}
+\label{fig:loss_tft}
+\end{figure}
 
 \section{Results and Discussion}
 
