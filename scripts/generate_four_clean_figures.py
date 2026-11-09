@@ -117,25 +117,25 @@ def main():
     # Helper for Individual Confusion Matrix
     # ─────────────────────────────────────────────────────────────
     def save_single_cm(cm, model_name, threshold, f1, prec, rec, cmap, filename):
-        fig, ax = plt.subplots(figsize=(5.2, 4.6))
+        fig, ax = plt.subplots(figsize=(6.5, 5.0))
         im = ax.imshow(cm, cmap=cmap, interpolation="nearest", aspect="auto")
-        ax.set_title(f"{model_name} Confusion Matrix\n($\\tau={threshold:.3f}$, F1$={f1:.3f}$, Rec$={rec*100:.1f}\\%$)", fontweight="bold", pad=10)
+        ax.set_title(f"{model_name} Confusion Matrix\n($\\tau={threshold:.3f}$, F1$={f1:.3f}$, Recall$={rec*100:.1f}\\%$)", fontweight="bold", pad=12, fontsize=13)
         ax.set_xticks([0, 1])
         ax.set_yticks([0, 1])
-        ax.set_xticklabels(["Predicted Non-Flare", "Predicted Flare"], fontweight="bold")
-        ax.set_yticklabels(["Actual Non-Flare", "Actual Flare"], fontweight="bold")
-        ax.set_ylabel("True Label", fontweight="bold")
-        ax.set_xlabel("Predicted Label", fontweight="bold")
+        ax.set_xticklabels(["Non-Flare (0)", "Flare (1)"], fontweight="bold", fontsize=11)
+        ax.set_yticklabels(["Non-Flare (0)", "Flare (1)"], fontweight="bold", fontsize=11)
+        ax.set_ylabel("Actual Ground Truth", fontweight="bold", labelpad=10, fontsize=12)
+        ax.set_xlabel("Model Prediction", fontweight="bold", labelpad=10, fontsize=12)
 
         for i in range(2):
             for j in range(2):
                 val = cm[i, j]
-                label_text = f"{val:,}"
-                sub_label = " (TN)" if (i==0 and j==0) else " (FP)" if (i==0 and j==1) else " (FN)" if (i==1 and j==0) else " (TP)"
+                sub_label = "(True Neg)" if (i==0 and j==0) else "(False Alarm)" if (i==0 and j==1) else "(Missed)" if (i==1 and j==0) else "(Caught Flare)"
                 text_col = "white" if val > cm.max() / 2 else "black"
-                ax.text(j, i, label_text + sub_label, ha="center", va="center", color=text_col, fontsize=13, fontweight="bold")
+                ax.text(j, i, f"{val:,}\n{sub_label}", ha="center", va="center", color=text_col, fontsize=12, fontweight="bold")
 
-        plt.colorbar(im, fraction=0.046, pad=0.04)
+        cbar = plt.colorbar(im, fraction=0.046, pad=0.04)
+        cbar.ax.tick_params(labelsize=10)
         plt.tight_layout()
         out_p = ROOT / filename
         plt.savefig(out_p, dpi=300)
@@ -162,3 +162,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
