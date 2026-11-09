@@ -340,22 +340,36 @@ Exp-08 (Dual Head)   & 4 & 128 & 2 & 32  & 0.10 & 1.58M  & 0.0153 & 0.4119 \\
 
 \subsection{Detection Threshold and Operational Trade-Offs}
 
-In highly imbalanced forecasting scenarios, a standard decision threshold of 0.50 is suboptimal. Fig.~\ref{fig:pr_roc_curves} illustrates the precision-recall and ROC curves for the evaluated architectures. Sweeping the operational decision threshold reveals that BDH achieves its maximum F1-score at $\tau = 0.200$, whereas LSTM requires a higher threshold of $\tau = 0.677$ to suppress false alarms. 
+In highly imbalanced forecasting scenarios, a standard decision threshold of 0.50 is suboptimal. Fig.~\ref{fig:pr_curve} and Fig.~\ref{fig:roc_curve} illustrate the precision-recall and ROC curves for the evaluated architectures, respectively. Sweeping the operational decision threshold reveals that BDH achieves its maximum F1-score at $\tau = 0.200$, whereas LSTM requires a higher threshold of $\tau = 0.677$ to suppress false alarms. 
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.98\linewidth]{pr_roc_curves.png}
-\caption{Precision-Recall (PR) and Receiver Operating Characteristic (ROC) curves of BDH, LSTM, and TFT on the independent SUIT test partition. Dashed line denotes the no-skill baseline (PR-AUC = 0.0152).}
-\label{fig:pr_roc_curves}
+\includegraphics[width=0.92\linewidth]{pr_curve.png}
+\caption{Precision-Recall (PR) curves for BDH, LSTM, and TFT on the independent SUIT test partition. The horizontal dashed line denotes the random no-skill baseline (PR-AUC = 0.0152).}
+\label{fig:pr_curve}
 \end{figure}
 
-Fig.~\ref{fig:confusion_matrices} presents the confusion matrices evaluated at each model's optimal F1 threshold. While BDH prioritizes flare detection by capturing 3 of 6 events at the cost of 187 false alarms, LSTM maintains a strict specificity profile with only 47 false alarms, capturing 2 flares. Depending on the payload mission context—such as whether a false alarm merely triggers an automated high-cadence ROI exposure versus taking sensitive payloads offline—operators can dynamically select the threshold along the empirical PR frontier.
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.92\linewidth]{roc_curve.png}
+\caption{Receiver Operating Characteristic (ROC) curves comparing true positive rate against false positive rate across decision thresholds. Dashed diagonal indicates random chance (ROC-AUC = 0.5000).}
+\label{fig:roc_curve}
+\end{figure}
+
+Fig.~\ref{fig:cm_bdh} and Fig.~\ref{fig:cm_lstm} display the confusion matrices evaluated at each model's optimal F1 threshold. While BDH prioritizes flare sensitivity by capturing 3 of 6 events (50.0\% recall) at the cost of 187 false alarms, LSTM maintains a strict specificity profile with only 47 false alarms, capturing 2 flares. Depending on the payload mission context—such as whether a false alarm merely triggers an automated high-cadence ROI exposure versus taking sensitive payloads offline—operators can dynamically select the threshold along the empirical PR frontier.
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.98\linewidth]{confusion_matrices.png}
-\caption{Confusion matrices for BDH ($\tau = 0.200$), LSTM ($\tau = 0.677$), and TFT ($\tau = 0.417$) on the 394 test sequences, illustrating the empirical false alarm versus missed flare trade-off.}
-\label{fig:confusion_matrices}
+\includegraphics[width=0.88\linewidth]{confusion_matrix_bdh.png}
+\caption{Confusion matrix for BDH evaluated at its optimal decision threshold ($\tau = 0.200$), illustrating 50.0\% recall on the 6 held-out test flares.}
+\label{fig:cm_bdh}
+\end{figure}
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.88\linewidth]{confusion_matrix_lstm.png}
+\caption{Confusion matrix for LSTM evaluated at its optimal decision threshold ($\tau = 0.677$), highlighting low false alarm generation (47 false positives).}
+\label{fig:cm_lstm}
 \end{figure}
 
 \subsection{Inference Latency and Onboard Feasibility}
