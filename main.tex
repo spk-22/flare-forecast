@@ -385,32 +385,35 @@ In highly imbalanced forecasting scenarios, a standard decision threshold of 0.5
 \label{fig:roc_curve}
 \end{figure}
 
-Fig.~\ref{fig:confusion_matrices} displays the confusion matrices evaluated at each model's optimal F1 threshold:
+Fig.~\ref{fig:cm_bdh}, Fig.~\ref{fig:cm_lstm}, and Fig.~\ref{fig:cm_tft} display the confusion matrices evaluated at each model's optimal F1 threshold, arranged sequentially to evaluate their respective classification profiles:
 \begin{itemize}
-    \item \textbf{BDH Confusion Profile (Fig.~\ref{fig:confusion_matrices}, left):} At an operational threshold of $\tau = 0.200$, BDH captures 3 of the 6 held-out test flares (50.0\% recall) with 201 true negatives, generating 187 false alarms. Its sparse activation gating isolates localized chromospheric brightenings, giving it the highest precision-recall area under the curve (PR-AUC = 0.0451).
-    \item \textbf{LSTM Confusion Profile (Fig.~\ref{fig:confusion_matrices}, center):} At an operational threshold of $\tau = 0.677$, LSTM acts as a highly conservative discriminator, generating only 47 false alarms while successfully identifying 2 of the 6 flares (33.3\% recall). Its recurrent cell states effectively filter out non-flaring chromospheric oscillations, yielding the highest specificity and overall accuracy (87.06\%).
-    \item \textbf{TFT Confusion Profile (Fig.~\ref{fig:confusion_matrices}, right):} At an operational threshold of $\tau = 0.417$, TFT captures 3 of the 6 flares (50.0\% recall) with 190 true negatives, but incurs 198 false alarms. Although its temporal attention matches BDH's 50\% recall, the unconstrained self-attention weights over-allocate probability mass to subtle background intensity fluctuations, resulting in a lower PR-AUC (0.0209).
+    \item \textbf{BDH Confusion Profile (Fig.~\ref{fig:cm_bdh}):} At an operational threshold of $\tau = 0.200$, BDH captures 3 of the 6 held-out test flares (50.0\% recall) with 201 true negatives, generating 187 false alarms. Its sparse activation gating isolates localized chromospheric brightenings, giving it the highest precision-recall area under the curve (PR-AUC = 0.0451).
+    \item \textbf{LSTM Confusion Profile (Fig.~\ref{fig:cm_lstm}):} At an operational threshold of $\tau = 0.677$, LSTM acts as a highly conservative discriminator, generating only 47 false alarms while successfully identifying 2 of the 6 flares (33.3\% recall). Its recurrent cell states effectively filter out non-flaring chromospheric oscillations, yielding the highest specificity and overall accuracy (87.06\%).
+    \item \textbf{TFT Confusion Profile (Fig.~\ref{fig:cm_tft}):} At an operational threshold of $\tau = 0.417$, TFT captures 3 of the 6 flares (50.0\% recall) with 190 true negatives, but incurs 198 false alarms. Although its temporal attention matches BDH's 50\% recall, the unconstrained self-attention weights over-allocate probability mass to subtle background intensity fluctuations, resulting in a lower PR-AUC (0.0209).
 \end{itemize}
 
 Depending on the operational payload mission context—such as whether a false alarm merely initiates an automated high-cadence ROI exposure versus placing sensitive instruments into protective standby—space weather operators can dynamically tune the decision threshold along the empirical PR frontier.
 
-\begin{figure*}[!t]
+\begin{figure}[!htbp]
 \centering
-\begin{minipage}{0.32\textwidth}
+\includegraphics[width=0.98\linewidth]{confusion_matrix_bdh.png}
+\caption{Confusion matrix for BDH evaluated at its optimal decision threshold ($\tau = 0.200$), illustrating 50.0\% recall on the 6 held-out test flares.}
+\label{fig:cm_bdh}
+\end{figure}
+
+\begin{figure}[!htbp]
 \centering
-\includegraphics[width=\linewidth]{confusion_matrix_bdh.png}
-\end{minipage}\hfill
-\begin{minipage}{0.32\textwidth}
+\includegraphics[width=0.98\linewidth]{confusion_matrix_lstm.png}
+\caption{Confusion matrix for LSTM evaluated at its optimal decision threshold ($\tau = 0.677$), highlighting low false alarm generation (47 false positives).}
+\label{fig:cm_lstm}
+\end{figure}
+
+\begin{figure}[!htbp]
 \centering
-\includegraphics[width=\linewidth]{confusion_matrix_lstm.png}
-\end{minipage}\hfill
-\begin{minipage}{0.32\textwidth}
-\centering
-\includegraphics[width=\linewidth]{confusion_matrix_tft.png}
-\end{minipage}
-\caption{Confusion matrices for BDH ($\tau = 0.200$, left), LSTM ($\tau = 0.677$, center), and TFT ($\tau = 0.417$, right) on the 394 test sequences, illustrating the empirical false alarm versus missed flare trade-off across architectures.}
-\label{fig:confusion_matrices}
-\end{figure*}
+\includegraphics[width=0.98\linewidth]{confusion_matrix_tft.png}
+\caption{Confusion matrix for TFT evaluated at its optimal decision threshold ($\tau = 0.417$), showing 50.0\% recall with 198 false alarms.}
+\label{fig:cm_tft}
+\end{figure}
 
 \subsection{Inference Latency and Onboard Feasibility}
 
