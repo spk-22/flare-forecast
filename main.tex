@@ -209,7 +209,28 @@ architecture is illustrated in Fig.~\ref{fig:bdh_arch}.
 
 To compare BDH with established temporal modelling approaches, two baseline models were implemented: Long Short-Term Memory (LSTM) and Temporal Fusion Transformer (TFT). The LSTM uses two recurrent layers with a hidden dimension of 128, followed by a classifier that uses the final hidden representation to produce a sequence-level prediction. TFT was implemented using its established architecture, combining recurrent processing, variable selection, and temporal attention, with a hidden size of 64. Both models were adapted for binary flare classification using the same input sequences as BDH.
 
-All three models were trained using AdamW and binary cross-entropy with logits loss. To account for the class imbalance, positive-class weighting was calculated exclusively from the training partition. The models were trained for up to 100 epochs, with early stopping based on validation PR-AUC. Gradient clipping was applied during training, and the same chronological data partitions and random seed were used across experiments to ensure a consistent comparison. Validation PR-AUC was selected as the model-selection criterion because of the low proportion of positive flare sequences.
+All three models were trained using AdamW and binary cross-entropy with logits loss. To account for the class imbalance, positive-class weighting was calculated exclusively from the training partition. The models were trained for up to 100 epochs, with early stopping based on validation PR-AUC. Gradient clipping was applied during training, and the same chronological data partitions and random seed were used across experiments to ensure a consistent comparison. Validation PR-AUC was selected as the model-selection criterion because of the low proportion of positive flare sequences. The loss convergence trajectories for BDH, LSTM, and TFT are displayed in Fig.~\ref{fig:loss_bdh}, Fig.~\ref{fig:loss_lstm}, and Fig.~\ref{fig:loss_tft}, respectively, demonstrating stable convergence without exploding gradients, with early stopping preventing over-fitting on pre-flare transients.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.98\linewidth]{training_loss_bdh.png}
+\caption{BDH training and validation loss convergence across optimization epochs.}
+\label{fig:loss_bdh}
+\end{figure}
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.98\linewidth]{training_loss_lstm.png}
+\caption{LSTM training and validation loss convergence across optimization epochs.}
+\label{fig:loss_lstm}
+\end{figure}
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.98\linewidth]{training_loss_tft.png}
+\caption{TFT training and validation loss convergence across optimization epochs.}
+\label{fig:loss_tft}
+\end{figure}
 
 \begin{figure}[!t]
 \centering
